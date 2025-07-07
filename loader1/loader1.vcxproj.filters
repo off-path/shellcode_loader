@@ -32,4 +32,9 @@
       <Filter>Resource Files</Filter>
     </MASM>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="syscall.masm">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

